@@ -7,7 +7,7 @@ app.register_blueprint(sass_blueprint)
 
 @app.route('/')
 def hello():
-    return render_template('hello.html')
+    return render_template('base.html')
 
 
 if __name__ == '__main__':
