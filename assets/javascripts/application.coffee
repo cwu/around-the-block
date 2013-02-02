@@ -28,9 +28,25 @@ window.fetchLocation = (cb) ->
           $('meta[name=longitude]').attr('content', position.coords.longitude)
       cb(position)
 
+mainPhotosTemplate = Handlebars.compile(
+  """
+  <div class="photo">
+    <img src="{{url}}" />
+  </div>
+  """
+)
 window.renderMain = (position) ->
-  #$.ajax
-  #  url : "/photos?latitude=#{ position.coords.latitude }&longitude=#{ position.coords.longitude }"
-  #  success : (response) ->
-  #    json = JSON.parse response
-  #    photos = _.(json, (
+  $.ajax
+    url : "/photos?latitude=#{ position.coords.latitude }&longitude=#{ position.coords.longitude }"
+    success : (response) ->
+      json = JSON.parse response
+      window.json = json
+      photoUrls = _.flatten(_.map json, (place, placeName) ->
+        _.map place.data, (item) ->
+          if item.photo_url
+            return [item.photo_url[0].source]
+          else
+            return []
+      )
+      _.each photoUrls, (photoUrl) ->
+        $('#container').append(mainPhotosTemplate(url : photoUrl))
