@@ -16,7 +16,7 @@ body {
 }
 
 header {
-  @include background-image(linear-gradient(#F2AAAA, #FA1919, #800000));
+  background-color: #800000;
   color: white;
   height: 50px;
   border-bottom: 1px solid black;
@@ -29,25 +29,18 @@ header {
 }
 
 .row {
-  position: relative;
   width: 100%;
   clear: both;
 
   img {
-    width: 163px;
-    margin-top: 10px;
+    display: block;
+    float: left;
+    width: 32%;
+    margin-top: 4px;
+    margin-left: 0.5%;
     margin-bottom: 0px;
     padding: 0;
-  }
-
-  img:first-child {
-    margin-left: 10px;
-    margin-right: 5px;
-  }
-
-  img:last-child {
-    margin-left: 5px;
-    margin-right: 10px;
+    border: 1px solid #DDDDDD;
   }
 }
 
