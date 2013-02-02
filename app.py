@@ -43,5 +43,10 @@ def main():
 def map():
     return render_template('map.html')
 
+#TODO: route depends on photo
+@app.route('/detail')
+def detail():
+    return render_template('detail.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block header %}
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+<!--[if lte IE 8]>
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
+<![endif]-->
+<script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+{% endblock %}
+
+{% block content %}
+<section>
+  <div id="main-image">
+    <img src="http://sphotos-d.ak.fbcdn.net/hphotos-ak-snc7/320587_10150283471912553_6537384_n.jpg" alt="PlaceKitten" />
+  </div>
+  <div id="photo-details">
+    <img class="profile-picture" src="http://profile.ak.fbcdn.net/hprofile-ak-snc6/c154.33.413.413/s160x160/270518_10150259876567206_4788575_n.jpg" />
+    Maverick - Jan 21, 2011
+  </div>
+  <div id="friend-details">
+    <img class="profile-picture" src="http://profile.ak.fbcdn.net/hprofile-ak-snc6/c154.33.413.413/s160x160/270518_10150259876567206_4788575_n.jpg" />
+    <img class="profile-picture" src="http://profile.ak.fbcdn.net/hprofile-ak-snc6/c154.33.413.413/s160x160/270518_10150259876567206_4788575_n.jpg" />
+  </div>
+  <div id="map-detail"></div>
+</section>
+
+<script type="text/javascript">
+  var map = L.map('map-detail').setView([51.505, -0.09], 16);
+  L.tileLayer('http://{s}.tile.cloudmade.com/d57249c45c2c486c9653c5f2600cafbc/997/256/{z}/{x}/{y}.png', {
+    maxZoom: 18
+  }).addTo(map);
+</script>
+
+{% endblock %}

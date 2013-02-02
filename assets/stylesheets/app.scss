@@ -131,6 +131,12 @@ body {
     }
   }
 
+  .profile-picture {
+    width: 40px;
+    height: 40px;
+    border: 3px solid white;
+  }
+
   #map {
     height: 100%;
     width: 100%;
@@ -142,6 +148,24 @@ body {
 
   #map.leaflet-container .leaflet-control-zoom {
     margin-top: 60px;
+  }
+
+  #map-detail {
+    height: 100px;
+    width: 100%;
+    position:  absolute;
+    display: block;
+    bottom: 0;
+  }
+
+  #main-image {
+    overflow: hidden;
+    img {
+      display: block;
+      max-width: 100%;
+      max-height: 325px;
+      margin: 0 auto;
+    }
   }
 }
 
