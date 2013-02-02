@@ -36,14 +36,20 @@ def load_user():
 
 @app.route('/')
 def index():
-  args = {
+  fb_args = {
     'client_id'    : settings.FB_APP_ID,
     'redirect_uri' : url_for('auth.fb_login', _external=True),
     'scope'        : "user_status,user_photos,friends_status,friends_photos",
   }
+  fs_args = {
+    'client_id'     : settings.FS_APP_ID,
+    'redirect_uri'  : url_for('.fs_login', _external=True),
+    'response_type' : 'code',
+  }
 
-  fb_url = "http://www.facebook.com/dialog/oauth?%s" % urllib.urlencode(args)
-  return render_template('index.html', fb_url=fb_url)
+  fb_url = "http://www.facebook.com/dialog/oauth?%s" % urllib.urlencode(fb_args)
+  fs_url = "https://foursquare.com/oauth2/authenticate?" + urllib.urlencode(fs_args)
+  return render_template('index.html', fb_url=fb_url, fs_url=fs_url)
 
 @app.route('/main')
 def main():
