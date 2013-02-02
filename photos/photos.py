@@ -17,7 +17,7 @@ def photos():
 
   oauth_token = g.user.fb_access_token
 
-  cache_key = "fb-results-%s-%s-%s" % (g.user.id, latitude, longitude)
+  cache_key = "fb-results-%s-%s-%s" % (g.user.id, int(latitude*10000), int(longitude*10000))
   item = r.get(cache_key)
   if not item:
     item = json.dumps(magic(oauth_token, '%s,%s' % (latitude, longitude), dist=distance))
