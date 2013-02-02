@@ -146,7 +146,7 @@ def photos():
   if not fs_item and oauth_token:
     fs_item = json.dumps(fs_to_common(
       fs_magic.magic('%s,%s' % (latitude, longitude), dist=distance),
-      fs_magic.get_photos(limit=20)))
+      fs_magic.get_photos(limit=21)))
     r.set(fs_cache_key, fs_item)
   elif not oauth_token:
     fs_item = '{"photos":{},"places":{}}'
