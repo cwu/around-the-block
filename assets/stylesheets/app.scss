@@ -21,6 +21,7 @@ header {
   height: 50px;
   border-bottom: 1px solid black;
   margin-bottom: 5px;
+  box-shadow: 0 2px 3px rgba(34, 25, 25, 0.4);
   h1 {
     font-size: 30px;
     font-family: "Patua One";
@@ -46,7 +47,6 @@ header {
   -webkit-column-break-inside: avoid;
   column-break-inside: avoid;
   display: inline-block;
-  margin: 0 2px 5px;
   box-shadow: 0 2px 3px rgba(34, 25, 25, 0.4);
   margin-bottom: 5px;
 
