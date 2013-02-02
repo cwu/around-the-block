@@ -1,13 +1,15 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <body class="base">
+  <body>
     <section>
       <header>
         <h1>Around the Block</h1>
       </header>
     </section>
-    {% block content %}
-    {% endblock %}
+    <div id="pjax-container">
+      {% block content %}
+      {% endblock %}
+      </div>
   </body>
 {% endblock %}

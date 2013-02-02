@@ -44,9 +44,7 @@ html {
 
 body {
   background-image: url("/static/images/satinweave.png");
-}
 
-body.base {
   header {
     background-color: #800000;
     color: white;
@@ -55,7 +53,7 @@ body.base {
     margin-bottom: 5px;
     box-shadow: 0 2px 3px rgba(34, 25, 25, 0.4);
     h1 {
-      font-size: 30px;
+      font-size: 2em;
       font-family: "Patua One";
       text-align: center;
       line-height: 50px;
@@ -104,14 +102,16 @@ body.base {
 }
 
 $fb-blue: #384E7D;
-body.bare {
-  text-align: center;
-  > .container {
-    position: fixed;
-    top: 50%;
-    width: 100%;
-    height: 100px;
-    margin-top: -50px;
+body {
+  p.splash {
+    margin-top: 100px;
+    margin-bottom: 80px;
+    text-align: center;
+    font-size: 3em;
+    font-family: "Patua One";
+  }
+  .center-screen-container {
+    text-align: center;
     a.facebook-login {
       @include social-button($fb-blue, 'fb_logo.png', 60px);
     }
