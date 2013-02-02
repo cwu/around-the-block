@@ -1,9 +1,9 @@
 from flask import Flask, render_template
 
-from assets.sass import sass_blueprint
+from assets.assets import assets_blueprint
 
 app = Flask(__name__)
-app.register_blueprint(sass_blueprint)
+app.register_blueprint(assets_blueprint)
 
 @app.route('/')
 def hello():
