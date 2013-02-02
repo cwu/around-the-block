@@ -61,7 +61,7 @@ window.renderMapView = (position) ->
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
         maxZoom: 18
       }).addTo(map)
-      map.locate({setView: true, maxZoom: 16})
+      map.locate({setView: true, maxZoom: 14})
       L.marker([position.coords.latitude, position.coords.longitude], {color: '#FF0000'}).addTo(map).bindPopup('You are here').openPopup()
 
       json = JSON.parse response
@@ -75,12 +75,12 @@ window.renderMapView = (position) ->
       ), true)
       locations = _.map json, (place, placeName) ->
         if place.data[0].photo_url
-          return [place.location.latitude, place.location.longitude, place.data[0].photo_url[0].source]
+          return [place.location.latitude, place.location.longitude, place.data[0].photo_url[0].source, place.data[0].id]
         else
           return [place.location.latitude, place.location.longitude, null]
       _.each locations, (location) ->
         if location[2] != null
-          L.marker([location[0], location[1]]).addTo(map).bindPopup('<img src="' + location[2] + '" />').openPopup()
+          L.marker([location[0], location[1]]).addTo(map).bindPopup('<a href="/detail/' + location[3] + '" ><img src="' + location[2] + '" /></a>').openPopup()
         else
           L.marker([location[0], location[1]]).addTo(map).bindPopup('No photo here').openPopup()
       _.each photoUrls, (photoUrl) ->
