@@ -3,4 +3,27 @@ html {
   -ms-text-size-adjust: 100%;
 }
 
-body { background-color: red; }
+header {
+  background-color: black;
+  color: white;
+  h1 {
+    text-align: center;
+  }
+}
+
+.row {
+  position: relative;
+  width: 100%;
+  clear: both;
+
+  .photo {
+    width: 50%;
+    position: relative;
+    float: left;
+    img {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
