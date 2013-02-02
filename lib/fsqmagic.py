@@ -1,6 +1,7 @@
 import string
 import urlparse
 import pprint
+import random
 from foursquare import Foursquare
 
 pp = pprint.PrettyPrinter(indent=2)
@@ -39,13 +40,17 @@ class FsqMagic:
     for key in self.explore.keys():
       vid = self.explore[key]["venue"]["id"]
       venue_photos = self.f.venues.photos(vid, params={"group":"venue"})["photos"]["items"]
-      for photo in venue_photos:
+      for i in venue_photos:
+        photo = {}
         photo["venue_id"] = vid;
+        photo["url"] = i["prefix"] + "500x500" + i["suffix"]
+        photo["photo_id"] = i["id"]
         self.photos.append(photo)
+    random.shuffle(self.photos)
 
     if verbose == True:
       print "\nPhoto list:\n"
-      pp.pprint(filtered_explore)
+      pp.pprint(self.photos)
 
     return self.explore
 
