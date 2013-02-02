@@ -42,7 +42,8 @@ html {
 #content browser { margin-right:-14px!important; overflow-y:scroll; overflow-x:hidden;}
 
 body {
-  background-image: url("/static/images/satinweave.png");
+  //background-image: url("/static/images/satinweave.png");
+  background-color: #DDD;
 
   header {
     a, a:visited {
@@ -132,9 +133,11 @@ body {
   }
 
   .profile-picture {
-    width: 40px;
-    height: 40px;
-    border: 3px solid white;
+    width: 50px;
+    height: 50px;
+    margin-top: 3px;
+    margin-left: 3px;
+    border: 2px solid grey;
   }
 
   #map {
@@ -153,18 +156,33 @@ body {
   #map-detail {
     height: 100px;
     width: 100%;
-    position:  absolute;
+    position:  relative;
     display: block;
-    bottom: 0;
   }
 
   #main-image {
-    overflow: hidden;
     img {
       display: block;
       max-width: 100%;
-      max-height: 325px;
+      max-height: 400px;
       margin: 0 auto;
+    box-shadow: 0 2px 3px rgba(34, 25, 25, 0.4);
+    }
+    margin-bottom: 8px;
+  }
+
+  #photo-details, #friend-details, #location-details {
+    height: 60px;
+    background-color: rgba(255,255,255, 0.8);
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    line-height: 60px;
+    font-family: "Rambla";
+    text-align: center;
+    img {
+      float: left;
     }
   }
 }
