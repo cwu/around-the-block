@@ -88,6 +88,7 @@ photoTemplate = Handlebars.compile(
 )
 locationTemplate = Handlebars.compile(
   """
+  <span class="title">{{ name }}</span><br>
   {{ street }} {{ city }}, {{ province }}
   """
 )
@@ -119,10 +120,10 @@ window.renderDetailView = (position) ->
         date: if isNaN(d.getTime()) then '' else d.toDateString()
       ))
       $('#location-details').append(locationTemplate(
+        name     : photo.place_name,
         street   : photo.location.street
         city     : photo.location.city
         province : photo.location.state
-        zip      : photo.location.zip
       ))
       _.each photo.tags, (tag) ->
         $('#friend-details').append(photoProfileTemplate(id: tag.id))
