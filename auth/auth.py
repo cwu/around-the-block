@@ -29,10 +29,11 @@ def fb_login():
     url = 'https://graph.facebook.com/me?access_token=%s' % fb_access_token
     user_profile = requests.get(url, params={'access_token' : fb_access_token}).json()
 
-    user = m.User(name=user_profile['name'], fb_uid=int(user_profile['id']), fb_access_token=fb_access_token)
-
-    db.session.add(user)
-    db.session.commit()
+    user = m.User.query.filter(m.User.fb_uid==int(user_profile['id'])).first()
+    if not user:
+      user = m.User(name=user_profile['name'], fb_uid=int(user_profile['id']), fb_access_token=fb_access_token)
+      db.session.add(user)
+      db.session.commit()
 
     session['user_id'] = user.id
 
