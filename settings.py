@@ -6,4 +6,4 @@ STATIC_PATH = os.path.join(PROJECT_DIR, 'assets')
 FB_APP_ID = os.environ['AROUND_THE_BLOCK_FB_APP_ID']
 FB_SECRET = os.environ['AROUND_THE_BLOCK_FB_SECRET']
 
-REDIS_PORT = os.environ.get('AROUND_THE_BLOCK_REDIS_PORT', 6379)
+REDIS_PORT = int(os.environ.get('AROUND_THE_BLOCK_REDIS_PORT', 6379))
