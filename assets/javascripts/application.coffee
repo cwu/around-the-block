@@ -68,7 +68,6 @@ window.renderMapView = (position) ->
 photoDetailsTemplate = Handlebars.compile(
   """
   <img class="profile-picture" src="https://graph.facebook.com/{{ id }}/picture?type=large" />
-  <span>{{ name }} - {{ date }}</span>
   {{#if date }}
     <span>{{ name }} - {{ date }}</span>
   {{ else }}
@@ -127,3 +126,9 @@ window.renderDetailView = (position) ->
       ))
       _.each photo.tags, (tag) ->
         $('#friend-details').append(photoProfileTemplate(id: tag.id))
+      if photo.tags.length > 1
+        $('#friend-details').append('<span>have been here</span>')
+      else if photo.tags.length == 1
+        $('#friend-details').append('<span>has been here</span>')
+      else
+        $('#friend-details').append('<span>None of your friends has been here</span>')

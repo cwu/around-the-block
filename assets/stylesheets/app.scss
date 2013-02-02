@@ -181,10 +181,10 @@ body {
     line-height: 60px;
     font-family: "Rambla";
     text-align: center;
+    overflow: hidden;
     img {
       float: left;
     }
-    overflow: hidden;
   }
 
   .map-link {
