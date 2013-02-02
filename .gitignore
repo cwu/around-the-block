@@ -40,3 +40,4 @@ nosetests.xml
 /build
 
 /database
+/dump.rdb
