@@ -166,18 +166,16 @@ body {
       max-width: 100%;
       max-height: 400px;
       margin: 0 auto;
-    box-shadow: 0 2px 3px rgba(34, 25, 25, 0.4);
+      box-shadow: 0 2px 3px rgba(34, 25, 25, 0.4);
     }
+    margin: 5px 5px 5px 5px;
     margin-bottom: 8px;
   }
 
-  #photo-details, #friend-details, #location-details {
+  #photo-details, #friend-details, #location-details, #location-name-details {
     height: 60px;
     background-color: rgba(255,255,255, 0.8);
-    margin-top: 5px;
-    margin-bottom: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin: 5px 5px 5px 5px;
     line-height: 60px;
     font-family: "Rambla";
     text-align: center;
@@ -187,11 +185,9 @@ body {
     }
   }
 
-  #location-details {
+  #location-name-details {
     line-height: 30px;
-  }
-
-  .title {
+    height: 30px;
     font-size: 1.4em;
   }
 
