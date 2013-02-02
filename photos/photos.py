@@ -32,7 +32,6 @@ def fb_to_common(fb_data):
           'url' : "https://graph.facebook.com/%s/picture?type=large" % tag_data['id']
         })
 
-      print event['from']
       photo = {
         'type'     : 'fb',
         'url'      : event['photo_url'][mid]['source'],
