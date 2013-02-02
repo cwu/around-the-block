@@ -88,14 +88,14 @@ window.renderMapView = (position) ->
 
 photoDetailsTemplate = Handlebars.compile(
   """
-  <img class="profile-picture" src="http://profile.ak.fbcdn.net/hprofile-ak-snc6/c154.33.413.413/s160x160/270518_10150259876567206_4788575_n.jpg" />
+  <img class="profile-picture" src="https://graph.facebook.com/{{ id }}/picture?type=large" />
   <span>Taken by {{ name }} - {{ date }}</span>
   </div>
   """
 )
 photoProfileTemplate = Handlebars.compile(
   """
-  <img class="profile-picture" src="http://profile.ak.fbcdn.net/hprofile-ak-snc6/c154.33.413.413/s160x160/270518_10150259876567206_4788575_n.jpg" />
+  <img class="profile-picture" src="https://graph.facebook.com/{{ id }}/picture?type=large" />
   """
 )
 photoTemplate = Handlebars.compile(
@@ -129,11 +129,12 @@ window.renderDetailView = (position) ->
           if photo.id == photoID
             L.marker([item.location.latitude, item.location.longitude]).addTo(map).bindPopup('Photo was taken here')
             map.setView([item.location.latitude, item.location.longitude])
+            console.log photo
             $('#main-image').append(photoTemplate(url : photo.photo_url[0].source))
-            $('#photo-details').append(photoDetailsTemplate(name : photo.from.name, date: photo.created_time))
+            $('#photo-details').append(photoDetailsTemplate(id: photo.from.id, name : photo.from.name, date: photo.created_time))
             $('#location-details').append(locationTemplate(street : item.location.street, city: item.location.city, province: item.location.state, zip: item.location.zip))
             count = 0
             _.each photo.tags.data, (tag) ->
               if count < 5
-                $('#friend-details').append(photoProfileTemplate(name : photo.from.name, date: photo.created_time))
+                $('#friend-details').append(photoProfileTemplate(id: tag.id))
               count++
