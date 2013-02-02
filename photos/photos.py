@@ -4,6 +4,7 @@ import json
 from lib.fbmagic import magic
 import redis
 import settings
+import random
 
 photos_blueprint = Blueprint('photos', __name__)
 
@@ -57,3 +58,13 @@ def photos():
     r.set(cache_key, item)
 
   return make_response(item)
+
+
+@photos_blueprint.route('/ar_photos')
+def ar_photos():
+  latitude = float(request.args['latitude'])
+  longitude = float(request.args['longitude'])
+  distance = request.args.get('range', 2000)
+
+  return make_response(r.get(random.choice(r.keys('fb-*'))))
+
