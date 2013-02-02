@@ -114,12 +114,6 @@ window.renderDetailView = (position) ->
     success : (response) ->
       urlParts = document.URL.split('/')
       photoID = urlParts[urlParts.length-1]
-      map = L.map('map-detail')
-      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-        maxZoom: 18
-      }).addTo(map)
-      map.locate({setView: true, maxZoom: 16})
 
       json = JSON.parse response
       window.json = json
@@ -127,8 +121,12 @@ window.renderDetailView = (position) ->
       _.each json, (item) ->
         _.each item.data, (photo) ->
           if photo.id == photoID
+            map = L.map('map-detail').setView([item.location.latitude, item.location.longitude], 13)
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+              attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+              maxZoom: 18
+            }).addTo(map)
             L.marker([item.location.latitude, item.location.longitude]).addTo(map).bindPopup('Photo was taken here')
-            map.panTo([item.location.latitude, item.location.longitude])
             $('#main-image').append(photoTemplate(url : photo.photo_url[0].source))
             d = new Date(photo.created_time)
             $('#photo-details').append(photoDetailsTemplate(id: photo.from.id, name : photo.from.name, date: d.toDateString()))
