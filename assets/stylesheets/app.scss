@@ -1,6 +1,37 @@
 @import "compass/reset";
 @import "compass";
 
+@mixin social-button($background-color, $logo, $height, $foreground-color: null, $hover-color: null) {
+  @if $foreground-color == null {
+    $foreground-color: #FFF;
+  }
+  $logo-size: 50px;
+  $offset: ($height - $logo-size) / 2;
+
+  @include box_sizing(border-box);
+  display: inline-block;
+  margin-bottom: 10px;
+  height: $height;
+  width: 90%;
+  color: $foreground-color;
+  @include border-radius(5px);
+  background: $background-color url('/static/images/fb_logo.png') $offset $offset no-repeat;
+  text-decoration: none;
+
+  &:hover {
+    background-color: lighten($background-color, 30%);
+  }
+
+  > div {
+    vertical-align: bottom;
+    margin-left: $height;
+    height: 100%;
+    line-height: $height;
+    text-align: center;
+    border-left: 1px solid $foreground-color;
+  }
+}
+
 html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -15,57 +46,75 @@ body {
   background-image: url("/static/images/satinweave.png");
 }
 
-header {
-  background-color: #800000;
-  color: white;
-  height: 50px;
-  border-bottom: 1px solid black;
-  margin-bottom: 5px;
-  box-shadow: 0 2px 3px rgba(34, 25, 25, 0.4);
-  h1 {
-    font-size: 30px;
-    font-family: "Patua One";
-    text-align: center;
-    line-height: 50px;
+body.base {
+  header {
+    background-color: #800000;
+    color: white;
+    height: 50px;
+    border-bottom: 1px solid black;
+    margin-bottom: 5px;
+    box-shadow: 0 2px 3px rgba(34, 25, 25, 0.4);
+    h1 {
+      font-size: 30px;
+      font-family: "Patua One";
+      text-align: center;
+      line-height: 50px;
+    }
   }
-}
 
-#container {
-  -moz-column-count: 3;
-  -moz-column-gap: 5px;
-  -moz-column-fill: auto;
-  -webkit-column-count: 3;
-  -webkit-column-gap: 5px;
-  -webkit-column-fill: auto;
-  column-count: 3;
-  column-gap: 5px;
-  column-fill: auto;
-}
+  #container {
+    -moz-column-count: 3;
+    -moz-column-gap: 5px;
+    -moz-column-fill: auto;
+    -webkit-column-count: 3;
+    -webkit-column-gap: 5px;
+    -webkit-column-fill: auto;
+    column-count: 3;
+    column-gap: 5px;
+    column-fill: auto;
+  }
 
-.photo {
-  -moz-column-break-inside: avoid;
-  -webkit-column-break-inside: avoid;
-  column-break-inside: avoid;
-  display: inline-block;
-  box-shadow: 0 2px 3px rgba(34, 25, 25, 0.4);
-  margin-bottom: 5px;
+  .photo {
+    -moz-column-break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    column-break-inside: avoid;
+    display: inline-block;
+    box-shadow: 0 2px 3px rgba(34, 25, 25, 0.4);
+    margin-bottom: 5px;
 
-  img {
-    width: 100%;
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  }
+
+  #map {
     height: 100%;
-    display: block;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -4;
+  }
+
+  #map.leaflet-container .leaflet-control-zoom {
+    margin-top: 60px;
   }
 }
 
-#map {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: -4;
+$fb-blue: #384E7D;
+body.bare {
+  text-align: center;
+  > .container {
+    position: fixed;
+    top: 50%;
+    width: 100%;
+    height: 100px;
+    margin-top: -50px;
+    a.facebook-login {
+      @include social-button($fb-blue, 'fb_logo.png', 60px);
+    }
+  }
 }
 
-#map.leaflet-container .leaflet-control-zoom {
-  margin-top: 60px;
-}
