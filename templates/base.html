@@ -11,6 +11,13 @@
     <div id="pjax-container">
       {% block content %}
       {% endblock %}
-      </div>
+    </div>
+    <script type="text/javascript">
+      {% if g.user %}
+        window.userSignedIn = true;
+      {% else %}
+        window.userSignedIn = false;
+      {% endif %}
+    </script>
   </body>
 {% endblock %}

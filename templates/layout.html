@@ -18,6 +18,8 @@
 
     <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
 
+    <meta name="latitude" content="{{ request.cookies.get('lat') or '' }}"/>
+    <meta name="longitude" content="{{ request.cookies.get('long') or '' }}"/>
   </head>
   {% block body %}
   {% endblock %}

@@ -1,8 +1,10 @@
-from flask import Flask, render_template, url_for, redirect, g, session
+from flask import Flask, render_template, url_for, redirect, g, session, request, make_response
 
 import settings
 from assets.assets import assets_blueprint
 from auth.auth import auth_blueprint
+from datetime import datetime, timedelta
+import time
 
 import models as m
 
@@ -37,11 +39,20 @@ def hello():
 
 @app.route('/main')
 def main():
-    return render_template('main.html')
+  return render_template('main.html')
 
 @app.route('/map')
 def map():
-    return render_template('map.html')
+  return render_template('map.html')
+
+@app.route('/location', methods=['POST'])
+def location():
+  five_min_from_now = int(time.mktime((datetime.now() + timedelta(minutes=5)).timetuple()))
+  response = make_response('OK')
+  response.set_cookie('lat', request.form['latitude'], expires=five_min_from_now)
+  response.set_cookie('long', request.form['longitude'], expires=five_min_from_now)
+  return response
+
 
 #TODO: route depends on photo
 @app.route('/detail')
