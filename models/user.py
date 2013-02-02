@@ -6,8 +6,10 @@ class User(Base):
 
   id              = Column(Integer, primary_key = True)
   name            = Column(String)
-  fb_uid          = Column(Integer)
+  fb_uid          = Column(String)
   fb_access_token = Column(String)
+  fs_uid          = Column(String)
+  fs_access_token = Column(String)
 
   def __repr__(self):
     return "<User('%s', '%s', fbuid %s)>" % (self.id, self.name, self.fb_uid)

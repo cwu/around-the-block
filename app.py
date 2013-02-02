@@ -34,13 +34,13 @@ def load_user():
     g.user = None
 
 @app.route('/')
-def hello():
-  if g.user:
-    return redirect(url_for('.main'))
+def index():
   return render_template('index.html')
 
 @app.route('/main')
 def main():
+  if not g.user:
+    return redirect(url_for('.index'))
   return render_template('main.html')
 
 @app.route('/map')
