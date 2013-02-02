@@ -89,7 +89,7 @@ window.renderMapView = (position) ->
 photoDetailsTemplate = Handlebars.compile(
   """
   <img class="profile-picture" src="https://graph.facebook.com/{{ id }}/picture?type=large" />
-  <span>Taken by {{ name }} - {{ date }}</span>
+  <span>{{ name }} - {{ date }}</span>
   </div>
   """
 )
@@ -131,8 +131,5 @@ window.renderDetailView = (position) ->
             d = new Date(photo.created_time)
             $('#photo-details').append(photoDetailsTemplate(id: photo.from.id, name : photo.from.name, date: d.toDateString()))
             $('#location-details').append(locationTemplate(street : item.location.street, city: item.location.city, province: item.location.state, zip: item.location.zip))
-            count = 0
             _.each photo.tags.data, (tag) ->
-              if count < 5
-                $('#friend-details').append(photoProfileTemplate(id: tag.id))
-              count++
+              $('#friend-details').append(photoProfileTemplate(id: tag.id))
