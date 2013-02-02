@@ -31,7 +31,7 @@ window.fetchLocation = (cb) ->
 mainPhotosTemplate = Handlebars.compile(
   """
   <div class="photo">
-    <img src="{{url}}" />
+    <a href="/detail/{{id}}"><img src="{{url}}" /></a>
   </div>
   """
 )
@@ -41,22 +41,23 @@ window.renderMain = (position) ->
     success : (response) ->
       json = JSON.parse response
       window.json = json
-      photoUrls = _.flatten(_.map json, (place, placeName) ->
+      photoUrls = _.flatten((_.map json, (place, placeName) ->
         _.map place.data, (item) ->
           if item.photo_url
-            return [item.photo_url[0].source]
+            return [item.photo_url[0].source, item.id]
           else
             return []
-      )
+      ), true)
       _.each photoUrls, (photoUrl) ->
-        $('#container').append(mainPhotosTemplate(url : photoUrl))
+        if photoUrl.length > 0
+          $('#container').append(mainPhotosTemplate(url : photoUrl[0], id: photoUrl[1]))
 
 window.renderMapView = (position) ->
   $.ajax
     url : "/photos?latitude=#{ position.coords.latitude }&longitude=#{ position.coords.longitude }"
     success : (response) ->
       map = L.map('map')
-      L.tileLayer('http://{s}.tile.cloudmade.com/d57249c45c2c486c9653c5f2600cafbc/997/256/{z}/{x}/{y}.png', {
+      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
         maxZoom: 18
       }).addTo(map)
@@ -65,13 +66,13 @@ window.renderMapView = (position) ->
 
       json = JSON.parse response
       window.json = json
-      photoUrls = _.flatten(_.map json, (place, placeName) ->
+      photoUrls = _.flatten((_.map json, (place, placeName) ->
         _.map place.data, (item) ->
           if item.photo_url
-            return [item.photo_url[0].source]
+            return [item.photo_url[0].source, item.id]
           else
             return []
-      )
+      ), true)
       locations = _.map json, (place, placeName) ->
         if place.data[0].photo_url
           return [place.location.latitude, place.location.longitude, place.data[0].photo_url[0].source]
@@ -83,4 +84,56 @@ window.renderMapView = (position) ->
         else
           L.marker([location[0], location[1]]).addTo(map).bindPopup('No photo here').openPopup()
       _.each photoUrls, (photoUrl) ->
-        $('#scroll-container').append(mainPhotosTemplate(url : photoUrl))
+        $('#scroll-container').append(mainPhotosTemplate(url : photoUrl[0], id: photoUrl[1]))
+
+photoDetailsTemplate = Handlebars.compile(
+  """
+  <img class="profile-picture" src="http://profile.ak.fbcdn.net/hprofile-ak-snc6/c154.33.413.413/s160x160/270518_10150259876567206_4788575_n.jpg" />
+  <span>Taken by {{ name }} - {{ date }}</span>
+  </div>
+  """
+)
+photoProfileTemplate = Handlebars.compile(
+  """
+  <img class="profile-picture" src="http://profile.ak.fbcdn.net/hprofile-ak-snc6/c154.33.413.413/s160x160/270518_10150259876567206_4788575_n.jpg" />
+  """
+)
+photoTemplate = Handlebars.compile(
+  """
+  <img src="{{ url }}" />
+  """
+)
+locationTemplate = Handlebars.compile(
+  """
+  {{ street }} {{ city }}, {{ province }} - {{ zip }}
+  """
+)
+window.renderDetailView = (position) ->
+  $.ajax
+    url : "/photos?latitude=#{ position.coords.latitude }&longitude=#{ position.coords.longitude }"
+    success : (response) ->
+      urlParts = document.URL.split('/')
+      photoID = urlParts[urlParts.length-1]
+      map = L.map('map-detail')
+      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+        maxZoom: 18
+      }).addTo(map)
+      map.locate({setView: true, maxZoom: 16})
+
+      json = JSON.parse response
+      window.json = json
+
+      _.each json, (item) ->
+        _.each item.data, (photo) ->
+          if photo.id == photoID
+            L.marker([item.location.latitude, item.location.longitude]).addTo(map).bindPopup('Photo was taken here')
+            map.setView([item.location.latitude, item.location.longitude])
+            $('#main-image').append(photoTemplate(url : photo.photo_url[0].source))
+            $('#photo-details').append(photoDetailsTemplate(name : photo.from.name, date: photo.created_time))
+            $('#location-details').append(locationTemplate(street : item.location.street, city: item.location.city, province: item.location.state, zip: item.location.zip))
+            count = 0
+            _.each photo.tags.data, (tag) ->
+              if count < 5
+                $('#friend-details').append(photoProfileTemplate(name : photo.from.name, date: photo.created_time))
+              count++

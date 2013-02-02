@@ -71,9 +71,9 @@ def location():
 
 
 #TODO: route depends on photo
-@app.route('/detail')
-def detail():
-    return render_template('detail.html')
+@app.route('/detail/<photo_id>')
+def detail(photo_id):
+  return render_template('detail.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+  app.run(debug=True)

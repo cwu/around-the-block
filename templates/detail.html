@@ -11,29 +11,19 @@
 {% block content %}
 <section>
   <div id="main-image">
-    <img src="http://sphotos-c.ak.fbcdn.net/hphotos-ak-snc6/270518_10150259876567206_4788575_n.jpg" alt="PlaceKitten" />
   </div>
   <div id="photo-details">
-    <img class="profile-picture" src="http://profile.ak.fbcdn.net/hprofile-ak-snc6/c154.33.413.413/s160x160/270518_10150259876567206_4788575_n.jpg" />
-    <span>Maverick Lee - Jan 21, 2011</span>
   </div>
   <div id="friend-details">
-    <img class="profile-picture" src="http://profile.ak.fbcdn.net/hprofile-ak-snc6/c154.33.413.413/s160x160/270518_10150259876567206_4788575_n.jpg" />
-    <img class="profile-picture" src="http://profile.ak.fbcdn.net/hprofile-ak-snc6/c154.33.413.413/s160x160/270518_10150259876567206_4788575_n.jpg" />
     <span>have been here</span>
   </div>
   <div id="location-details">
-    101 College Street Toronto, Ontario - L3N 1Q1
   </div>
   <div id="map-detail"></div>
 </section>
 
 <script type="text/javascript">
-  var map = L.map('map-detail').setView([51.505, -0.09], 16);
-  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    maxZoom: 18
-  }).addTo(map);
-  L.marker([51.505, -0.09]).addTo(map)
+  fetchLocation(renderDetailView);
 </script>
 
 {% endblock %}
