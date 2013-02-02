@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, g, session, request, make_response
 
+import urllib
 import settings
 from assets.assets import assets_blueprint
 from auth.auth import auth_blueprint
@@ -35,7 +36,14 @@ def load_user():
 
 @app.route('/')
 def index():
-  return render_template('index.html')
+  args = {
+    'client_id'    : settings.FB_APP_ID,
+    'redirect_uri' : url_for('auth.fb_login', _external=True),
+    'scope'        : "user_status,user_photos,friends_status,friends_photos",
+  }
+
+  fb_url = "http://www.facebook.com/dialog/oauth?%s" % urllib.urlencode(args)
+  return render_template('index.html', fb_url=fb_url)
 
 @app.route('/main')
 def main():
