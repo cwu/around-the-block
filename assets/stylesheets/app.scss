@@ -45,6 +45,15 @@ body {
   background-image: url("/static/images/satinweave.png");
 
   header {
+    a, a:visited {
+      color: white;
+    }
+
+    .map-link {
+      float: right;
+      line-height: 50px;
+    }
+
     background-color: #800000;
     color: white;
     height: 50px;
