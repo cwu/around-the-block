@@ -43,7 +43,7 @@ def index():
   }
   fs_args = {
     'client_id'     : settings.FS_APP_ID,
-    'redirect_uri'  : url_for('.fs_login', _external=True),
+    'redirect_uri'  : url_for('auth.fs_login', _external=True),
     'response_type' : 'code',
   }
 
