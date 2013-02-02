@@ -45,7 +45,7 @@ def fb_login():
 
     session['user_id'] = user.id
 
-    return redirect('/')
+    return redirect('/main')
   else:
     url = "http://www.facebook.com/dialog/oauth?%s" % urllib.urlencode(args)
     return redirect(url)
@@ -88,7 +88,7 @@ def fs_login():
 
     session['user_id'] = user.id
 
-    return redirect('/')
+    return redirect('/main')
   else:
     args['response_type'] = 'code'
     url = "https://foursquare.com/oauth2/authenticate?" + urllib.urlencode(args)
