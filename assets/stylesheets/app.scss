@@ -41,10 +41,6 @@ html {
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); /* only needed once */
 #content browser { margin-right:-14px!important; overflow-y:scroll; overflow-x:hidden;}
 
-#logo {
-  height: 40px;
-}
-
 body {
   background-image: url("/static/images/satinweave.png");
 
@@ -55,11 +51,20 @@ body {
     border-bottom: 1px solid black;
     margin-bottom: 5px;
     box-shadow: 0 2px 3px rgba(34, 25, 25, 0.4);
+      text-align: center;
     h1 {
       font-size: 2em;
       font-family: "Patua One";
-      text-align: center;
       line-height: 50px;
+      height: 50px;
+      position: relative;
+      display: inline-block;
+      img {
+        margin-top: 5px;
+        position: absolute;
+        height: 40px;
+        right: 102%;
+      }
     }
   }
 
