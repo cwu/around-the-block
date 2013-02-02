@@ -38,9 +38,12 @@ html {
   overflow: -moz-scrollbars-none;
 }
 
-
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); /* only needed once */
 #content browser { margin-right:-14px!important; overflow-y:scroll; overflow-x:hidden;}
+
+#logo {
+  height: 40px;
+}
 
 body {
   background-image: url("/static/images/satinweave.png");
@@ -88,17 +91,26 @@ body {
   }
 
   #image-container {
+    background-color: white;
+    border-top: 5px solid #800000;
+    height: 100px;
     width: 100%;
-    overflow: auto;
+    position: absolute;
+    bottom: 0;
+    overflow-x: scroll;
+    overflow-y: hidden;
   }
 
   #scroll-container {
     height: 100px;
+    width: 1000000%;
     position: absolute;
     bottom: 0;
 
     .photo {
       float: left;
+      box-shadow: 0 2px 3px rgba(34, 25, 25, 0.4);
+      margin-right: 5px;
       img {
         height: 100px;
       }
