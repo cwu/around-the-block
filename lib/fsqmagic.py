@@ -15,7 +15,7 @@ class FsqMagic:
     self.explore = explore
     self.photos = photos
 
-  def magic(self, latlong, dist=1000, limit=50, verbose=True):
+  def magic(self, latlong, dist=1000, limit=50, verbose=False):
     print "Explore\n"
     # explore venues
     explore = self.f.venues.explore(params={"ll":latlong,"friendVisits":"visited","radius":dist, "limit":limit, "section":"food"})["groups"][0]["items"]

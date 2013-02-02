@@ -5,7 +5,7 @@ import pprint
 
 pp = pprint.PrettyPrinter(indent=2)
 
-def magic(oauth, latlong, dist=1000, limit=5, verbose=True):
+def magic(oauth, latlong, dist=1000, limit=5, verbose=False):
   g = GraphAPI(oauth)
 
   # search a bunch of stuff, until no more results
