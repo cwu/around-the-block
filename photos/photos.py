@@ -27,7 +27,7 @@ def fb_to_common(fb_data):
         'id'         : event['id'],
         'location'   : properties['location'],
         'from'       : event['from'],
-        'tags'       : event['tags']['data'] if 'tags' in event else [],
+        'tags'       : event.get('tags', {'data':[]})['data'],
         'date'       : event['created_time'],
         'place_id'   : properties['page_id'],
         'place_name' : venue_name,
