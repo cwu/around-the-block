@@ -4,11 +4,14 @@ $(window).on 'load', (evt) ->
     history.pushState('', document.title, window.location.pathname)
     evt.preventDefault()
 
-window.hasLocation = () -> !!($('meta[name=latitude]').attr('content') and $('meta[name=latitude]').attr('content'))
+window.hasLocation = () ->
+  latitude = $('meta[name=latitude]').attr('content')
+  longitude = $('meta[name=longitude]').attr('content')
+  return latitude and longitude and latitude.length > 0 and longitude.length > 0
 
 window.getLocation = () ->
   return {
-    latitude : $('meta[name=latitude]').attr('content')
+    latitude  : $('meta[name=latitude]').attr('content')
     longitude : $('meta[name=longitude]').attr('content')
   }
 
@@ -60,8 +63,9 @@ window.renderMapView = (position) ->
       window.json = json
       _.each json.places, (place) ->
         latLong = [place.location.latitude, place.location.longitude]
-        randomPhoto = place.photos[_.random(0, place.photos.length-1)]
-        L.marker(latLong).addTo(map).bindPopup("<a href=\"/detail/#{ randomPhoto.id}\"><img src=\"#{randomPhoto.url}\"/></a>").openPopup()
+        if place.photos.length > 0
+          randomPhoto = place.photos[_.random(place.photos.length-1)]
+          L.marker(latLong).addTo(map).bindPopup("<a href=\"/detail/#{ randomPhoto.id}\"><img src=\"#{randomPhoto.url}\"/></a>").openPopup()
       _.each json.photos, (photo) ->
         $('#scroll-container').append(mainPhotosTemplate(url : photo.url, id: photo.id))
 
