@@ -128,10 +128,10 @@ window.renderDetailView = (position) ->
         _.each item.data, (photo) ->
           if photo.id == photoID
             L.marker([item.location.latitude, item.location.longitude]).addTo(map).bindPopup('Photo was taken here')
-            map.setView([item.location.latitude, item.location.longitude])
-            console.log photo
+            map.panTo([item.location.latitude, item.location.longitude])
             $('#main-image').append(photoTemplate(url : photo.photo_url[0].source))
-            $('#photo-details').append(photoDetailsTemplate(id: photo.from.id, name : photo.from.name, date: photo.created_time))
+            d = new Date(photo.created_time)
+            $('#photo-details').append(photoDetailsTemplate(id: photo.from.id, name : photo.from.name, date: d.toDateString()))
             $('#location-details').append(locationTemplate(street : item.location.street, city: item.location.city, province: item.location.state, zip: item.location.zip))
             count = 0
             _.each photo.tags.data, (tag) ->
