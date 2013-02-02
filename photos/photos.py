@@ -124,7 +124,7 @@ def photos():
 
   oauth_token = g.user.fb_access_token
 
-  fb_cache_key = "fb-results-%s-%d-%d" % (g.user.id, int(latitude*1000), int(longitude*1000))
+  fb_cache_key = "fb-results-%s-%d-%d" % (g.user.id, int(latitude*10), int(longitude*10))
   fb_item = r.get(fb_cache_key)
   if not fb_item and oauth_token:
     try:
@@ -138,7 +138,7 @@ def photos():
   elif not oauth_token:
     fb_item = '{"photos":{},"places":{}}'
 
-  fs_cache_key = "fs-results-%s-%d-%d" % (g.user.id, int(latitude*1000), int(longitude*1000))
+  fs_cache_key = "fs-results-%s-%d-%d" % (g.user.id, int(latitude*10), int(longitude*10))
 
   oauth_token = g.user.fs_access_token
   fs_magic = FsqMagic(oauth_token)
