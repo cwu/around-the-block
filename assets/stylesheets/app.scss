@@ -1,13 +1,21 @@
+@import "compass/reset";
+@import "compass";
+
 html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
 }
 
 header {
-  background-color: black;
-  color: white;
+  @include background-image(linear-gradient(white, #cccccc, #aaaaaa));
+  color: black;
+  height: 50px;
+  border-bottom: 1px solid black;
+  margin-bottom: 3px;
   h1 {
+    font-family: "Righteous";
     text-align: center;
+    line-height: 50px;
   }
 }
 
@@ -26,4 +34,12 @@ header {
       padding: 0;
     }
   }
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
 }
