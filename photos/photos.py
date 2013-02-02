@@ -11,13 +11,13 @@ r = redis.StrictRedis(port=settings.REDIS_PORT)
 
 @photos_blueprint.route('/photos')
 def photos():
-  latitude = request.args['latitude']
-  longitude = request.args['longitude']
+  latitude = float(request.args['latitude'])
+  longitude = float(request.args['longitude'])
   distance = request.args.get('range', 2000)
 
   oauth_token = g.user.fb_access_token
 
-  cache_key = "fb-results-%s-%s-%s" % (g.user.id, int(latitude*10000), int(longitude*10000))
+  cache_key = "fb-results-%s-%d-%d" % (g.user.id, int(latitude*10000), int(longitude*10000))
   item = r.get(cache_key)
   if not item:
     item = json.dumps(magic(oauth_token, '%s,%s' % (latitude, longitude), dist=distance))
