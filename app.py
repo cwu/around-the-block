@@ -22,7 +22,8 @@ db.init()
 
 @app.route('/')
 def hello():
-  return render_template('index.html')
+  from lib.auth import get_user
+  return render_template('index.html', user=get_user())
 
 @app.route('/main')
 def main():
