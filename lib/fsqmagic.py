@@ -1,13 +1,16 @@
-import string
-import urlparse
 import pprint
 import random
 from foursquare import Foursquare
+import datetime
 
 pp = pprint.PrettyPrinter(indent=2)
 
 class FsqMagic:
-  def __init__(self, oauth, explore={}, photos=[]):
+  def __init__(self, oauth, explore=None, photos=None):
+    if explore is None:
+      explore = {}
+    if photos is None:
+      photos = []
     self.f = Foursquare(access_token = oauth)
     self.explore = explore
     self.photos = photos
@@ -44,7 +47,8 @@ class FsqMagic:
         photo = {}
         photo["venue_id"] = vid;
         photo["url"] = i["prefix"] + "500x500" + i["suffix"]
-        photo["photo_id"] = i["id"]
+        photo["id"] = i["id"]
+        photo["date"] = datetime.datetime.fromtimestamp(i["createdAt"]).isoformat()
         self.photos.append(photo)
     random.shuffle(self.photos)
 
