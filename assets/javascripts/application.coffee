@@ -88,7 +88,7 @@ photoTemplate = Handlebars.compile(
 )
 locationTemplate = Handlebars.compile(
   """
-  {{ street }} {{ city }}, {{ province }} - {{ zip }}
+  {{ street }} {{ city }}, {{ province }}
   """
 )
 window.renderDetailView = (position) ->

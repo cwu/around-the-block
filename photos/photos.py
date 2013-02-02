@@ -55,9 +55,15 @@ def fs_to_common(place_data, photo_data):
     'places' : {},
   }
   for venue_name, properties in place_data.iteritems():
-    venue = properties['venue']
-    venue['location']['latitude']      = venue['location'].pop('lat')
-    venue['location']['longitude']     = venue['location'].pop('lng')
+    venue    = properties['venue']
+    location = venue['location']
+
+    location['street']    = location.pop('address')
+    location['state']     = location.pop('state')
+    location['latitude']  = location.pop('lat')
+    location['longitude'] = location.pop('lng')
+    venue['location']     = location
+
     common_data['places'][venue['id']] = {
         'type'     : 'fs',
         'location' : venue['location'],
