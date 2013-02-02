@@ -4,7 +4,7 @@ $(window).on 'load', (evt) ->
     history.pushState('', document.title, window.location.pathname)
     evt.preventDefault()
 
-hasLocation = () -> !!($('meta[name=latitude]').attr('content') and $('meta[name=latitude]').attr('content'))
+window.hasLocation = () -> !!($('meta[name=latitude]').attr('content') and $('meta[name=latitude]').attr('content'))
 
 window.getLocation = () ->
   return {
@@ -15,12 +15,8 @@ window.getLocation = () ->
 window.fetchLocation = (cb) ->
   if hasLocation()
     cb(coords : getLocation())
-  else
-    navigator.geolocation.getCurrentPosition(cb) if navigator?.geolocation?
-
-$ ->
-  if not hasLocation()
-    window.fetchLocation (position) ->
+  else if navigator?.geolocation?
+    navigator.geolocation.getCurrentPosition (position) ->
       $.ajax
         url  : '/location'
         type : 'POST'
@@ -30,3 +26,11 @@ $ ->
         success : () ->
           $('meta[name=latitude]').attr('content', position.coords.latitude)
           $('meta[name=longitude]').attr('content', position.coords.longitude)
+      cb(position)
+
+window.renderMain = (position) ->
+  #$.ajax
+  #  url : "/photos?latitude=#{ position.coords.latitude }&longitude=#{ position.coords.longitude }"
+  #  success : (response) ->
+  #    json = JSON.parse response
+  #    photos = _.(json, (

@@ -3,6 +3,7 @@ from flask import Flask, render_template, url_for, redirect, g, session, request
 import settings
 from assets.assets import assets_blueprint
 from auth.auth import auth_blueprint
+from photos.photos import photos_blueprint
 from datetime import datetime, timedelta
 import time
 
@@ -16,6 +17,7 @@ app.config.from_object(settings)
 
 app.register_blueprint(assets_blueprint)
 app.register_blueprint(auth_blueprint)
+app.register_blueprint(photos_blueprint)
 
 # required by flask for handling sessions properly
 @app.teardown_request

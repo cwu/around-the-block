@@ -12,8 +12,9 @@ auth_blueprint = Blueprint('auth', __name__)
 @auth_blueprint.route('/fb_login')
 def fb_login():
   fb_args = {
-    'client_id' : settings.FB_APP_ID,
-    'redirect_uri' : url_for('.fb_login', _external=True)
+    'client_id'    : settings.FB_APP_ID,
+    'redirect_uri' : url_for('.fb_login', _external=True),
+    'scope'        : "user_status,user_photos,friends_status,friends_photos",
   }
 
   if 'code' in request.args:
@@ -30,10 +31,16 @@ def fb_login():
     user_profile = requests.get(url, params={'access_token' : fb_access_token}).json()
 
     user = m.User.query.filter(m.User.fb_uid==int(user_profile['id'])).first()
-    if not user:
+    if user:
+      # update auth token
+      user.name = user_profile['name']
+      user.fb_access_token = fb_access_token
+    else:
+      # create user
       user = m.User(name=user_profile['name'], fb_uid=int(user_profile['id']), fb_access_token=fb_access_token)
-      db.session.add(user)
-      db.session.commit()
+
+    db.session.add(user)
+    db.session.commit()
 
     session['user_id'] = user.id
 
