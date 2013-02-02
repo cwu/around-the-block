@@ -34,8 +34,8 @@ nosetests.xml
 .project
 .pydevproject
 
-*.css
-*.js
+/assets/*.css
+/assets/*.js
 
 /build
 
