@@ -69,25 +69,39 @@ window.renderMapView = (position) ->
       _.each json.photos, (photo) ->
         $('#scroll-container').append(mainPhotosTemplate(url : photo.url, id: photo.id))
 
+detailsTemplate = Handlebars.compile(
+  """
+  <div class="main-image"></div>
+  <div class="location-name-details"></div>
+  <div class="photo-details"></div>
+  <div class="friend-details"></div>
+  """
+)
+
 photoDetailsTemplate = Handlebars.compile(
   """
-  <img class="profile-picture" src="https://graph.facebook.com/{{id}}/picture?type=large" />
-  {{#if date }}
-    <span>{{ name }} - {{ date }}</span>
-  {{ else }}
-    <span>{{ name }}</span>
-  {{/if}}
+  <div class="photo-details">
+    <img class="profile-picture" src="{{url}}" />
+    {{#if date }}
+      <span>{{ name }} - {{ date }}</span>
+    {{ else }}
+      <span>{{ name }}</span>
+    {{/if}}
+    </div>
   </div>
+  <div class="friend-details"></div>
   """
 )
 photoProfileTemplate = Handlebars.compile(
   """
-  <img class="profile-picture" src="https://graph.facebook.com/{{id}}/picture?type=large" />
+  <img class="profile-picture" src="{{url}}" />
   """
 )
 photoTemplate = Handlebars.compile(
   """
-  <img src="{{ url }}" />
+  <div class="main-image">
+    <img src="{{ url }}" />
+  </div>
   """
 )
 locationTemplate = Handlebars.compile(
@@ -97,7 +111,9 @@ locationTemplate = Handlebars.compile(
 )
 locationNameTemplate = Handlebars.compile(
   """
-  {{ name }}
+  <div class="location-name-details">
+    {{ name }}
+  </div>
   """
 )
 window.renderDetailView = (position) ->
@@ -120,27 +136,66 @@ window.renderDetailView = (position) ->
       }).addTo(map)
 
       L.marker(latLong).addTo(map).bindPopup('Photo was taken here')
-      $('#main-image').append(photoTemplate(url : photo.url))
-      d = new Date(photo.date)
-      $('#photo-details').append(photoDetailsTemplate(
-        id  : photo.from.id
-        name : photo.from.name
-        date : if isNaN(d.getTime()) then '' else d.toDateString()
-      ))
+
       $('#location-details').append(locationTemplate(
         name     : photo.place_name
         street   : photo.location.street
         city     : photo.location.city
         province : photo.location.state
       ))
-      $('#location-name-details').append(locationNameTemplate(
-        name     : photo.place_name
-      ))
-      _.each photo.tags, (tag) ->
-        $('#friend-details').append(photoProfileTemplate(id: tag.id))
-      if photo.tags.length > 1
-        $('#friend-details').append('<span>have been here</span>')
-      else if photo.tags.length == 1
-        $('#friend-details').append('<span>has been here</span>')
+
+      new DetailView(photo: photo).render()
+
+$ ->
+  window.DetailView = Backbone.View.extend
+    events :
+      'click .main-image img'      : 'click'
+      'swipeLeft .main-image img'  : 'left'
+      'swipeRight .main-image img' : 'right'
+    className  : 'detail-view'
+    template   : detailsTemplate
+    initialize : (options) ->
+      this.photo = options.photo
+      $('.detail-view-wrapper').append(this.$el)
+    click : (evt) ->
+      x = evt.pageX - $(evt.target).offset().left
+      if x < $(evt.target).width() / 2
+        this.left()
       else
-        $('#friend-details').append('<span>Be the first to explore!</span>')
+        this.right()
+    left : () ->
+      photos = window.json.places[this.photo.place_id].photos
+      ids = _.map photos, (x) -> x.id
+      i = _.indexOf ids, this.photo.id
+      this.photo = photos[(i + photos.length - 1) % photos.length]
+      this.render()
+    right : () ->
+      photos = window.json.places[this.photo.place_id].photos
+      ids = _.map photos, (x) -> x.id
+      i = _.indexOf ids, this.photo.id
+      this.photo = photos[(i + 1) % photos.length]
+      this.render()
+    render : () ->
+      this.$el.html('')
+      this.$el.append(photoTemplate(url : this.photo.url))
+
+      this.$el.append(locationNameTemplate(
+        name : this.photo.place_name
+      ))
+
+      date = new Date(this.photo.date)
+      this.$el.append(photoDetailsTemplate(
+        url  : this.photo.from.url
+        name : this.photo.from.name
+        date : if isNaN(date.getTime()) then '' else date.toDateString()
+      ))
+
+      _.each this.photo.tags, (tag) =>
+        this.$('.friend-details').append(photoProfileTemplate(url: tag.url))
+
+      if this.photo.tags.length > 1
+        this.$('.friend-details').append('<span>have been here</span>')
+      else if this.photo.tags.length == 1
+        this.$('.friend-details').append('<span>has been here</span>')
+      else
+        this.$('.friend-details').append('<span>Be the first to explore!</span>')

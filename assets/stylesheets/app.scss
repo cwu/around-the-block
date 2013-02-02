@@ -160,7 +160,7 @@ body {
     display: block;
   }
 
-  #main-image {
+  .main-image {
     img {
       display: block;
       max-width: 100%;
@@ -172,7 +172,20 @@ body {
     margin-bottom: 8px;
   }
 
-  #photo-details, #friend-details, #location-details, #location-name-details {
+  .detail-view-section {
+    .detail-view {
+      &.current {
+        position: static;
+      }
+      &.next-right {
+        position: absolute;
+        left: 100%;
+        width: 100%;
+      }
+    }
+  }
+
+  .photo-details, .friend-details, #location-details, .location-name-details {
     height: 60px;
     background-color: rgba(255,255,255, 0.8);
     margin: 5px 5px 5px 5px;
@@ -185,7 +198,7 @@ body {
     }
   }
 
-  #location-name-details {
+  .location-name-details {
     line-height: 30px;
     height: 30px;
     font-size: 1.4em;

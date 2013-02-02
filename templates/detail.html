@@ -1,27 +1,13 @@
 {% extends "base.html" %}
 
-{% block header %}
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
-<!--[if lte IE 8]>
-  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
-<![endif]-->
-<script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
-{% endblock %}
-
 {% block content %}
-<section>
-  <div id="main-image">
+<section class="detail-section">
+  <div class="detail-view-wrapper">
   </div>
-  <div id="location-name-details">
-  </div>
-  <div id="photo-details">
-  </div>
-  <div id="friend-details">
-  </div>
-  <div id="location-details">
-  </div>
+  <div id="location-details"></div>
   <div id="map-detail"></div>
 </section>
+
 
 <script type="text/javascript">
   fetchLocation(renderDetailView);

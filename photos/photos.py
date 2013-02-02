@@ -130,11 +130,11 @@ def photos():
     try:
       fb_item = json.dumps(fb_to_common(magic(oauth_token, '%s,%s' % (latitude, longitude), dist=distance)))
       r.set(fb_cache_key, fb_item)
-    except GraphAPIError:
+    except GraphAPIError, e:
       g.user.fb_access_token = None
       db.session.add(g.user)
       db.session.commit()
-      abort()
+      raise e
   elif not oauth_token:
     fb_item = '{"photos":{},"places":{}}'
 
