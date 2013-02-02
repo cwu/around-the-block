@@ -1,4 +1,4 @@
-from flask import request, Blueprint, redirect, session, g, make_response
+from flask import request, Blueprint, g, make_response
 
 import json
 from lib.fbmagic import magic
@@ -12,17 +12,14 @@ r = redis.StrictRedis()
 def photos():
   latitude = request.args['latitude']
   longitude = request.args['longitude']
+  distance = request.args.get('range', 1000)
 
   oauth_token = g.user.fb_access_token
 
   cache_key = "%s-%s-%s" % (g.user.id, latitude, longitude)
   item = r.get(cache_key)
   if not item:
-    try:
-      item = json.dumps(magic(oauth_token, '%s,%s' % (latitude, longitude)))
-      r.set(cache_key, item)
-    except Exception:
-      session.pop('user_id')
-      return redirect('/')
+    item = json.dumps(magic(oauth_token, '%s,%s' % (latitude, longitude), dist=distance))
+    r.set(cache_key, item)
 
   return make_response(item)
