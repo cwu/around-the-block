@@ -5,74 +5,12 @@
   <div id="map"></div>
   <div id="image-container">
     <div id="scroll-container">
-      <div class="photo">
-        <img src="http://placekitten.com/400/300" alt="PlaceKitten" />
-      </div>
-      <div class="photo">
-        <img src="http://sphotos-d.ak.fbcdn.net/hphotos-ak-snc7/320587_10150283471912553_6537384_n.jpg" />
-      </div>
-      <div class="photo">
-        <img src="http://sphotos-e.ak.fbcdn.net/hphotos-ak-ash4/402264_10150512744251975_710388308_n.jpg" />
-      </div>
-      <div class="photo">
-        <img src="http://placekitten.com/400/300" alt="PlaceKitten" />
-      </div>
-      <div class="photo">
-        <img src="http://sphotos-g.ak.fbcdn.net/hphotos-ak-ash4/398382_2641627693984_295711110_n.jpg" />
-      </div>
-      <div class="photo">
-        <img src="http://sphotos-c.ak.fbcdn.net/hphotos-ak-snc6/270518_10150259876567206_4788575_n.jpg" />
-      </div>
-      <div class="photo">
-        <img src="http://sphotos-d.ak.fbcdn.net/hphotos-ak-snc7/320587_10150283471912553_6537384_n.jpg" />
-      </div>
-      <div class="photo">
-        <img src="http://sphotos-d.ak.fbcdn.net/hphotos-ak-snc7/320587_10150283471912553_6537384_n.jpg" />
-      </div>
-      <div class="photo">
-        <img src="http://placekitten.com/400/300" alt="PlaceKitten" />
-      </div>
-      <div class="photo">
-        <img src="http://placekitten.com/g/400/300" alt="PlaceKitten" />
-      </div>
-      <div class="photo">
-        <img src="http://placekitten.com/500/450" alt="PlaceKitten" />
-      </div>
-      <div class="photo">
-        <img src="http://placekitten.com/g/400/300" alt="PlaceKitten" />
-      </div>
-      <div class="photo">
-        <img src="http://placekitten.com/500/450" alt="PlaceKitten" />
-      </div>
-      <div class="photo">
-        <img src="http://sphotos-c.ak.fbcdn.net/hphotos-ak-snc6/270518_10150259876567206_4788575_n.jpg" />
-      </div>
     </div>
   </div>
 </section>
 
 <script type="text/javascript">
-  var map = L.map('map');
-  L.tileLayer('http://{s}.tile.cloudmade.com/d57249c45c2c486c9653c5f2600cafbc/997/256/{z}/{x}/{y}.png', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-  maxZoom: 18
-  }).addTo(map);
-  map.locate({setView: true, maxZoom: 16});
-  function onLocationFound(e) {
-    var radius = e.accuracy / 2;
-
-    L.marker(e.latlng).addTo(map)
-      .bindPopup("You are within " + radius + " meters from this point").openPopup();
-
-    L.circle(e.latlng, radius).addTo(map);
-  }
-
-  map.on('locationfound', onLocationFound);
-  function onLocationError(e) {
-    alert(e.message);
-  }
-
-  map.on('locationerror', onLocationError);
+  fetchLocation(renderMapView);
 </script>
 
 {% endblock %}

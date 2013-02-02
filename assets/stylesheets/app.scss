@@ -118,7 +118,7 @@ body {
 
   #scroll-container {
     height: 100px;
-    width: 1000000%;
+    width: 500%;
     position: absolute;
     bottom: 0;
 
@@ -193,6 +193,10 @@ body {
     img {
       height: 40px;
     }
+  }
+
+  .leaflet-popup-content img {
+    width: 200px;
   }
 }
 

@@ -13,7 +13,7 @@ r = redis.StrictRedis(port=settings.REDIS_PORT)
 def photos():
   latitude = request.args['latitude']
   longitude = request.args['longitude']
-  distance = request.args.get('range', 1000)
+  distance = request.args.get('range', 2000)
 
   oauth_token = g.user.fb_access_token
 
