@@ -58,46 +58,22 @@ window.renderMapView = (position) ->
 
       json = JSON.parse response
       window.json = json
-<<<<<<< HEAD
-      photoUrls = _.flatten((_.map json, (place, placeName) ->
-        _.map place.data, (item) ->
-          if item.photo_url
-            return [item.photo_url[0].source, item.id]
-          else
-            return []
-      ), true)
-      locations = _.map json, (place, placeName) ->
-        if place.data[0].photo_url
-          return [place.location.latitude, place.location.longitude, place.data[0].photo_url[0].source, place.data[0].id]
-        else
-          return [place.location.latitude, place.location.longitude, null]
-      _.each locations, (location) ->
-        if location[2] != null
-          L.marker([location[0], location[1]]).addTo(map).bindPopup('<a href="/detail/' + location[3] + '" ><img src="' + location[2] + '" /></a>').openPopup()
-        else
-          L.marker([location[0], location[1]]).addTo(map).bindPopup('No photo here').openPopup()
-      _.each photoUrls, (photoUrl) ->
-        $('#scroll-container').append(mainPhotosTemplate(url : photoUrl[0], id: photoUrl[1]))
-=======
       _.each json.places, (place) ->
         latLong = [place.location.latitude, place.location.longitude]
-        L.marker(latLong).addTo(map).bindPopup("<img src=\"#{place.photo_url}\"/>").openPopup()
+        randomPhoto = place.photos[_.random(0, place.photos.length-1)]
+        L.marker(latLong).addTo(map).bindPopup("<a href=\"/detail/#{ randomPhoto.id}\"><img src=\"#{randomPhoto.url}\"/></a>").openPopup()
       _.each json.photos, (photo) ->
         $('#scroll-container').append(mainPhotosTemplate(url : photo.url, id: photo.id))
->>>>>>> update for fb common
 
 photoDetailsTemplate = Handlebars.compile(
   """
   <img class="profile-picture" src="https://graph.facebook.com/{{ id }}/picture?type=large" />
-<<<<<<< HEAD
   <span>{{ name }} - {{ date }}</span>
-=======
   {{#if date }}
-    <span>Taken by {{ name }} - {{ date }}</span>
+    <span>{{ name }} - {{ date }}</span>
   {{ else }}
-    <span>Taken by {{ name }}</span>
+    <span>{{ name }}</span>
   {{/if}}
->>>>>>> update for fb common
   </div>
   """
 )
