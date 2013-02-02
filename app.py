@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for, redirect
 
 import settings
 from assets.assets import assets_blueprint
@@ -23,7 +23,10 @@ db.init()
 @app.route('/')
 def hello():
   from lib.auth import get_user
-  return render_template('index.html', user=get_user())
+  user = get_user()
+  if user:
+    return redirect(url_for('.main'))
+  return render_template('index.html', user=user)
 
 @app.route('/main')
 def main():
