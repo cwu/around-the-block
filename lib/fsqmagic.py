@@ -15,7 +15,7 @@ class FsqMagic:
     self.explore = explore
     self.photos = photos
 
-  def magic(self, latlong, dist=1000, limit=50, verbose=False):
+  def magic(self, latlong, dist=1000, limit=50, verbose=True):
     print "Explore\n"
     # explore venues
     explore = self.f.venues.explore(params={"ll":latlong,"friendVisits":"visited","radius":dist, "limit":limit, "section":"food"})["groups"][0]["items"]
@@ -48,13 +48,14 @@ class FsqMagic:
         photo["venue_id"] = vid;
         photo["url"] = i["prefix"] + "500x500" + i["suffix"]
         photo["id"] = i["id"]
+        photo["user"] = i["user"]
         photo["date"] = datetime.datetime.fromtimestamp(i["createdAt"]).isoformat()
         self.photos.append(photo)
     random.shuffle(self.photos)
 
     if verbose == True:
       print "\nPhoto list:\n"
-      pp.pprint(self.photos)
+      #pp.pprint(self.photos)
 
     return self.explore
 

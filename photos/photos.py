@@ -25,13 +25,24 @@ def fb_to_common(fb_data):
 
       mid = len(event['photo_url']) / 2
 
+      tags_data = event.get('tags', {'data':[]})['data']
+      tags = []
+      for tag_data in tags_data:
+        tags.append({
+          'url' : "https://graph.facebook.com/%s/picture?type=large" % tags_data['id']
+        })
+
       photo = {
-        'type'       : 'fb',
-        'url'        : event['photo_url'][mid]['source'],
-        'id'         : event['id'],
-        'location'   : properties['location'],
-        'from'       : event['from'],
-        'tags'       : event.get('tags', {'data':[]})['data'],
+        'type'     : 'fb',
+        'url'      : event['photo_url'][mid]['source'],
+        'id'       : event['id'],
+        'location' : properties['location'],
+        'from'     : {
+          'name'   : event['from']['name'],
+          'url'    : "https                             : //graph.facebook.com/%s/picture?type=large" % event['from']['id'],
+          'date'   : event['from']['date'],
+        },
+        'tags'       : tags,
         'date'       : event['created_time'],
         'place_id'   : properties['page_id'],
         'place_name' : venue_name,
@@ -54,6 +65,14 @@ def fs_to_common(place_data, photo_data):
     'photos' : {},
     'places' : {},
   }
+
+  def gen_user(user):
+    return {
+      'id'   : user.get('id', ''),
+      'name' : (user.get('firstName', '') + ' ' + user.get('lastName', '')).strip(),
+      'url'  : user.get('photo', {'prefix': ''})['prefix'] + "300x300" + user.get('photo', {'suffix':''})['suffix'],
+    }
+  tags = {}
   for venue_name, properties in place_data.iteritems():
     venue    = properties['venue']
     location = venue['location']
@@ -64,27 +83,35 @@ def fs_to_common(place_data, photo_data):
     location['longitude'] = location.pop('lng')
     venue['location']     = location
 
+    tags[venue['id']] = []
+    for group in venue['likes']['groups']:
+      for u in group['items']:
+        tags[venue['id']].append(gen_user(u))
+
     common_data['places'][venue['id']] = {
+        'id'       : venue['id'],
         'type'     : 'fs',
         'location' : venue['location'],
         'photos'   : [],
         'name'     : venue_name,
     }
 
+
   for photo in photo_data:
-     photo_data = {
-       'type'       : 'fs',
-       'id'         : photo['id'],
-       'url'        : photo['url'],
-       'location'   : common_data['places'][photo['venue_id']]['location'],
-       'from'       : { 'id' : '', 'name' : '' },
-       'tags'       : [],
-       'date'       : photo['date'],
-       'place_id'   : photo['venue_id'],
-       'place_name' : common_data['places'][photo['venue_id']]['name']
-     }
-     common_data['photos'][photo['id']] = photo_data
-     common_data['places'][photo['venue_id']]['photos'].append(photo_data)
+    venue = common_data['places'][photo['venue_id']]
+    photo_data = {
+      'type'       : 'fs',
+      'id'         : photo['id'],
+      'url'        : photo['url'],
+      'location'   : common_data['places'][photo['venue_id']]['location'],
+      'from'       : gen_user(photo['user']),
+      'tags'       : tags[photo['venue_id']],
+      'date'       : photo['date'],
+      'place_id'   : photo['venue_id'],
+      'place_name' : common_data['places'][photo['venue_id']]['name']
+    }
+    common_data['photos'][photo['id']] = photo_data
+    common_data['places'][photo['venue_id']]['photos'].append(photo_data)
 
   return common_data
 
