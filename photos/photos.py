@@ -136,6 +136,7 @@ def photos():
       db.session.commit()
       raise e
   elif not oauth_token:
+    print '================ NO FACEBOOK ===================='
     fb_item = '{"photos":{},"places":{}}'
 
   fs_cache_key = "fs-results-%s-%d-%d" % (g.user.id, int(latitude*10), int(longitude*10))
@@ -149,6 +150,7 @@ def photos():
       fs_magic.get_photos(limit=21)))
     r.set(fs_cache_key, fs_item)
   elif not oauth_token:
+    print '================ NO FOURSQUARE ===================='
     fs_item = '{"photos":{},"places":{}}'
 
   # merge the two
