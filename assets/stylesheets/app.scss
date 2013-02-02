@@ -25,8 +25,7 @@
   > div {
     vertical-align: bottom;
     margin-left: $height;
-    height: $height - 8px;
-    padding-top: 8px;
+    height: $height;
     line-height: $height;
     text-align: center;
     border-left: 1px solid $foreground-color;
@@ -210,7 +209,6 @@ body {
     text-align: center;
     a.facebook-login {
       @include social-button($fb-blue, 'fb_logo.png', 60px);
-      font-size: 30px;
     }
   }
 }
