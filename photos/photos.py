@@ -29,9 +29,10 @@ def fb_to_common(fb_data):
       tags = []
       for tag_data in tags_data:
         tags.append({
-          'url' : "https://graph.facebook.com/%s/picture?type=large" % tags_data['id']
+          'url' : "https://graph.facebook.com/%s/picture?type=large" % tag_data['id']
         })
 
+      print event['from']
       photo = {
         'type'     : 'fb',
         'url'      : event['photo_url'][mid]['source'],
@@ -39,8 +40,7 @@ def fb_to_common(fb_data):
         'location' : properties['location'],
         'from'     : {
           'name'   : event['from']['name'],
-          'url'    : "https                             : //graph.facebook.com/%s/picture?type=large" % event['from']['id'],
-          'date'   : event['from']['date'],
+          'url'    : "https://graph.facebook.com/%s/picture?type=large" % event['from']['id'],
         },
         'tags'       : tags,
         'date'       : event['created_time'],
@@ -166,6 +166,11 @@ def ar_photos():
   #latitude = float(request.args['latitude'])
   #longitude = float(request.args['longitude'])
   #distance = request.args.get('range', 2000)
+  limit = int(request.args.get('limit', 100))
 
-  return make_response(r.get(random.choice(r.keys('fb-*'))))
+  x = json.loads(r.get(random.choice(r.keys('fs-*'))))
 
+  keep_keys = random.sample(x['photos'].keys(), min(len(x['photos']), limit))
+  x['photos'] = dict((k,x['photos'][k]) for k in keep_keys)
+
+  return make_response(json.dumps(x))
