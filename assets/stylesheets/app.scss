@@ -216,6 +216,7 @@ body {
     font-family: "Patua One";
   }
   .center-screen-container {
+    font-family: 'lucida grande';
     text-align: center;
     a.facebook-login {
       @include social-button($fb-blue, 'fb_logo.png', 60px);
