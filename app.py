@@ -9,6 +9,10 @@ app.register_blueprint(assets_blueprint)
 def hello():
     return render_template('base.html')
 
+@app.route('/main')
+def hello():
+    return render_template('main.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

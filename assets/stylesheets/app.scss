@@ -11,6 +11,9 @@ html {
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); /* only needed once */
 #content browser { margin-right:-14px!important; overflow-y:scroll; overflow-x:hidden;}
 
+body {
+  background-image: url("/static/images/satinweave.png");
+}
 
 header {
   @include background-image(linear-gradient(#F2AAAA, #FA1919, #800000));
@@ -31,7 +34,7 @@ header {
   clear: both;
 
   img {
-    width: 162px;
+    width: 163px;
     margin-top: 10px;
     margin-bottom: 0px;
     padding: 0;
