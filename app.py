@@ -1,8 +1,10 @@
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect, g, session
 
 import settings
 from assets.assets import assets_blueprint
 from auth.auth import auth_blueprint
+
+import models as m
 
 import db
 
@@ -20,13 +22,18 @@ def shutdown_session(exception=None):
 
 db.init()
 
+@app.before_request
+def load_user():
+  if 'user_id' in session:
+    g.user = m.User.query.filter_by(id=session["user_id"]).first()
+  else:
+    g.user = None
+
 @app.route('/')
 def hello():
-  from lib.auth import get_user
-  user = get_user()
-  if user:
+  if g.user:
     return redirect(url_for('.main'))
-  return render_template('index.html', user=user)
+  return render_template('index.html')
 
 @app.route('/main')
 def main():
