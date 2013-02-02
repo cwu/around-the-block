@@ -15,7 +15,7 @@
   width: 90%;
   color: $foreground-color;
   @include border-radius(5px);
-  background: $background-color url('/static/images/fb_logo.png') $offset $offset no-repeat;
+  background: $background-color url('/static/images/' + $logo) $offset $offset no-repeat;
   text-decoration: none;
 
   &:hover {
@@ -201,6 +201,7 @@ body {
 }
 
 $fb-blue: #384E7D;
+$fs-blue: #306ea8;
 body {
   p.splash {
     margin-top: 50px;
@@ -213,6 +214,9 @@ body {
     text-align: center;
     a.facebook-login {
       @include social-button($fb-blue, 'fb_logo.png', 60px);
+    }
+    a.foursquare-login {
+      @include social-button($fs-blue, 'fs_logo.png', 60px);
     }
   }
 }
