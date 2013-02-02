@@ -41,16 +41,8 @@ window.renderMain = (position) ->
     success : (response) ->
       json = JSON.parse response
       window.json = json
-      photoUrls = _.flatten((_.map json, (place, placeName) ->
-        _.map place.data, (item) ->
-          if item.photo_url
-            return [item.photo_url[0].source, item.id]
-          else
-            return []
-      ), true)
-      _.each photoUrls, (photoUrl) ->
-        if photoUrl.length > 0
-          $('#container').append(mainPhotosTemplate(url : photoUrl[0], id: photoUrl[1]))
+      _.each json.photos, (photo) ->
+        $('#container').append(mainPhotosTemplate(url : photo.url, id: photo.id))
 
 window.renderMapView = (position) ->
   $.ajax
@@ -66,6 +58,7 @@ window.renderMapView = (position) ->
 
       json = JSON.parse response
       window.json = json
+<<<<<<< HEAD
       photoUrls = _.flatten((_.map json, (place, placeName) ->
         _.map place.data, (item) ->
           if item.photo_url
@@ -85,11 +78,26 @@ window.renderMapView = (position) ->
           L.marker([location[0], location[1]]).addTo(map).bindPopup('No photo here').openPopup()
       _.each photoUrls, (photoUrl) ->
         $('#scroll-container').append(mainPhotosTemplate(url : photoUrl[0], id: photoUrl[1]))
+=======
+      _.each json.places, (place) ->
+        latLong = [place.location.latitude, place.location.longitude]
+        L.marker(latLong).addTo(map).bindPopup("<img src=\"#{place.photo_url}\"/>").openPopup()
+      _.each json.photos, (photo) ->
+        $('#scroll-container').append(mainPhotosTemplate(url : photo.url, id: photo.id))
+>>>>>>> update for fb common
 
 photoDetailsTemplate = Handlebars.compile(
   """
   <img class="profile-picture" src="https://graph.facebook.com/{{ id }}/picture?type=large" />
+<<<<<<< HEAD
   <span>{{ name }} - {{ date }}</span>
+=======
+  {{#if date }}
+    <span>Taken by {{ name }} - {{ date }}</span>
+  {{ else }}
+    <span>Taken by {{ name }}</span>
+  {{/if}}
+>>>>>>> update for fb common
   </div>
   """
 )
@@ -118,18 +126,28 @@ window.renderDetailView = (position) ->
       json = JSON.parse response
       window.json = json
 
-      _.each json, (item) ->
-        _.each item.data, (photo) ->
-          if photo.id == photoID
-            map = L.map('map-detail').setView([item.location.latitude, item.location.longitude], 13)
-            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-              attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-              maxZoom: 18
-            }).addTo(map)
-            L.marker([item.location.latitude, item.location.longitude]).addTo(map).bindPopup('Photo was taken here')
-            $('#main-image').append(photoTemplate(url : photo.photo_url[0].source))
-            d = new Date(photo.created_time)
-            $('#photo-details').append(photoDetailsTemplate(id: photo.from.id, name : photo.from.name, date: d.toDateString()))
-            $('#location-details').append(locationTemplate(street : item.location.street, city: item.location.city, province: item.location.state, zip: item.location.zip))
-            _.each photo.tags.data, (tag) ->
-              $('#friend-details').append(photoProfileTemplate(id: tag.id))
+      photo = json.photos[photoID]
+      latLong = [photo.location.latitude, photo.location.longitude]
+
+      map = L.map('map-detail').setView(latLong, 13)
+      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+        maxZoom: 18
+      }).addTo(map)
+
+      L.marker(latLong).addTo(map).bindPopup('Photo was taken here')
+      $('#main-image').append(photoTemplate(url : photo.url))
+      d = new Date(photo.date)
+      $('#photo-details').append(photoDetailsTemplate(
+        id: photo.from.id,
+        name : photo.from.name,
+        date: if isNaN(d.getTime()) then '' else d.toDateString()
+      ))
+      $('#location-details').append(locationTemplate(
+        street   : photo.location.street
+        city     : photo.location.city
+        province : photo.location.state
+        zip      : photo.location.zip
+      ))
+      _.each photo.tags, (tag) ->
+        $('#friend-details').append(photoProfileTemplate(id: tag.id))

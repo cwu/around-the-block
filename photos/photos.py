@@ -9,6 +9,39 @@ photos_blueprint = Blueprint('photos', __name__)
 
 r = redis.StrictRedis(port=settings.REDIS_PORT)
 
+def fb_to_common(fb_data):
+  common_data = {
+      'photos' : {},
+      'places' : {},
+  }
+  for venue_name, properties in fb_data.iteritems():
+    for event in properties['data']:
+      if 'photo_url' not in event:
+        continue
+
+      mid = len(event['photo_url']) / 2
+
+      photo = {
+        'url'        : event['photo_url'][mid]['source'],
+        'id'         : event['id'],
+        'location'   : properties['location'],
+        'from'       : event['from'],
+        'tags'       : event['tags']['data'],
+        'date'       : event['created_time'],
+        'place_id'   : properties['page_id'],
+        'place_name' : venue_name,
+      }
+      common_data['photos'][event['id']] = photo
+
+      if properties['page_id'] not in common_data['places']:
+        common_data['places'][properties['page_id']] = {
+          'location'  : properties['location'],
+          'photo_url' : properties['photo_url'],
+          'photos'    : [],
+        }
+      common_data['places'][properties['page_id']]['photos'].append(photo)
+  return common_data
+
 @photos_blueprint.route('/photos')
 def photos():
   latitude = float(request.args['latitude'])
@@ -17,10 +50,10 @@ def photos():
 
   oauth_token = g.user.fb_access_token
 
-  cache_key = "fb-results-%s-%d-%d" % (g.user.id, int(latitude*10000), int(longitude*10000))
+  cache_key = "fb-results-%s-%d-%d" % (g.user.id, int(latitude*1000), int(longitude*1000))
   item = r.get(cache_key)
   if not item:
-    item = json.dumps(magic(oauth_token, '%s,%s' % (latitude, longitude), dist=distance))
+    item = json.dumps(fb_to_common(magic(oauth_token, '%s,%s' % (latitude, longitude), dist=distance)))
     r.set(cache_key, item)
 
   return make_response(item)
