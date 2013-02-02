@@ -4,16 +4,22 @@
 html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
+  overflow: -moz-scrollbars-none;
 }
 
+
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); /* only needed once */
+#content browser { margin-right:-14px!important; overflow-y:scroll; overflow-x:hidden;}
+
+
 header {
-  @include background-image(linear-gradient(white, #cccccc, #aaaaaa));
-  color: black;
+  @include background-image(linear-gradient(#F2AAAA, #FA1919, #800000));
+  color: white;
   height: 50px;
   border-bottom: 1px solid black;
-  margin-bottom: 3px;
   h1 {
-    font-family: "Righteous";
+    font-size: 30px;
+    font-family: "Patua One";
     text-align: center;
     line-height: 50px;
   }
@@ -24,15 +30,21 @@ header {
   width: 100%;
   clear: both;
 
-  .photo {
-    width: 50%;
-    position: relative;
-    float: left;
-    img {
-      width: 100%;
-      margin: 0;
-      padding: 0;
-    }
+  img {
+    width: 162px;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    padding: 0;
+  }
+
+  img:first-child {
+    margin-left: 10px;
+    margin-right: 5px;
+  }
+
+  img:last-child {
+    margin-left: 5px;
+    margin-right: 10px;
   }
 }
 

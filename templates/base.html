@@ -5,6 +5,7 @@
     <meta name="description" content="Find out what your friends are doing around the block">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Patua+One' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/stylesheets/app.css" />
   </head>
   <body>
@@ -13,23 +14,7 @@
         <h1>Around the Block</h1>
       </header>
     </section>
-    <section>
-      <div class="row">
-        <div class="photo">
-          <img src="http://sphotos-c.ak.fbcdn.net/hphotos-ak-snc6/270518_10150259876567206_4788575_n.jpg" />
-        </div>
-        <div class="photo">
-          <img src="http://sphotos-c.ak.fbcdn.net/hphotos-ak-snc6/270518_10150259876567206_4788575_n.jpg" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="photo">
-          <img src="http://sphotos-c.ak.fbcdn.net/hphotos-ak-snc6/270518_10150259876567206_4788575_n.jpg" />
-        </div>
-        <div class="photo">
-          <img src="http://sphotos-c.ak.fbcdn.net/hphotos-ak-snc6/270518_10150259876567206_4788575_n.jpg" />
-        </div>
-      </div>
-    </section>
+    {% block content %}
+    {% endblock %}
   </body>
 </html>
