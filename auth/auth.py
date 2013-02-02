@@ -31,7 +31,10 @@ def fb_login():
     url = 'https://graph.facebook.com/me?access_token=%s' % fb_access_token
     user_profile = requests.get(url, params={'access_token' : fb_access_token}).json()
 
-    user = m.User.query.filter(m.User.fb_uid==int(user_profile['id'])).first()
+    if 'user_id' in session:
+      user = m.User.query.filter_by(id=session["user_id"]).first()
+    else:
+      user = m.User.query.filter(m.User.fb_uid==int(user_profile['id'])).first()
     if user:
       # update auth token
       user.name = user_profile['name']
@@ -75,7 +78,10 @@ def fs_login():
 
     fs_uid = client.users()['user']['id']
 
-    user = m.User.query.filter(m.User.fs_uid==int(fs_uid)).first()
+    if 'user_id' in session:
+      user = m.User.query.filter_by(id=session["user_id"]).first()
+    else:
+      user = m.User.query.filter(m.User.fs_uid==int(fs_uid)).first()
     if user:
       # update auth token
       user.fs_access_token = fs_access_token
