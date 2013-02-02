@@ -134,7 +134,7 @@ def photos():
       db.session.add(g.user)
       db.session.commit()
       raise e
-  elif not oauth_token:
+  elif not fb_item and not oauth_token:
     print '================ NO FACEBOOK ===================='
     fb_item = '{"photos":{},"places":{}}'
 
@@ -148,7 +148,7 @@ def photos():
       fs_magic.magic('%s,%s' % (latitude, longitude), dist=distance),
       fs_magic.get_photos(limit=21)))
     r.set(fs_cache_key, fs_item)
-  elif not oauth_token:
+  elif not fs_item and not oauth_token:
     print '================ NO FOURSQUARE ===================='
     fs_item = '{"photos":{},"places":{}}'
 
