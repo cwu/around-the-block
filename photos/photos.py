@@ -76,8 +76,8 @@ def fs_to_common(place_data, photo_data):
     venue    = properties['venue']
     location = venue['location']
 
-    location['street']    = location.pop('address')
-    location['state']     = location.pop('state')
+    location['street']    = '' if 'address' not in location else location.pop('address')
+    location['state']     = '' if 'state' not in location else location.pop('state')
     location['latitude']  = location.pop('lat')
     location['longitude'] = location.pop('lng')
     venue['location']     = location
